@@ -39,7 +39,18 @@ Pas de réseau Docker commun ? Remplace la section `networks` par
 
 `ORIGIN` doit être l’URL publique exacte (avec `https://`), sinon les formulaires sont refusés.
 
-La base SQLite est dans `./data/secret-gift.db` : sauvegarder ce fichier suffit.
+La base SQLite est créée automatiquement au démarrage, dans le volume Docker `secret-gift-data`.
+Rien à préparer : le volume est créé par `docker compose up` avec les bons droits.
+
+Sauvegarde (copie cohérente, même pendant que l’app tourne) :
+
+```bash
+docker exec secret-gift node -e "require('better-sqlite3')('/data/secret-gift.db').backup('/data/backup.db').then(()=>console.log('ok'))"
+docker cp secret-gift:/data/backup.db ./secret-gift-backup.db
+```
+
+Tu préfères un dossier visible sur l’hôte (`./data`) ? Remplace le volume par `./data:/data`
+et donne d’abord ce dossier à l’utilisateur du conteneur : `mkdir -p data && sudo chown 1000:1000 data`.
 
 ## Développement
 
