@@ -7,9 +7,13 @@ services:
       # Adresse publique exacte (obligatoire pour les formulaires SvelteKit)
       ORIGIN: ${ORIGIN:-https://tirage.example.com}
     volumes:
-      - ./data:/data
+      # Volume nommé : Docker lui donne les bons droits (utilisateur node)
+      - secret-gift-data:/data
     networks:
       - caddy
+
+volumes:
+  secret-gift-data:
 
 networks:
   caddy:
