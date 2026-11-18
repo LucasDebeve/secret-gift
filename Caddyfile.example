@@ -1,0 +1,4 @@
+tirage.example.com {
+	encode zstd gzip
+	reverse_proxy secret-gift:3000
+}
