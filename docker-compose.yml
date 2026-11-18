@@ -1,0 +1,18 @@
+services:
+  secret-gift:
+    build: .
+    container_name: secret-gift
+    restart: unless-stopped
+    environment:
+      # Adresse publique exacte (obligatoire pour les formulaires SvelteKit)
+      ORIGIN: ${ORIGIN:-https://tirage.example.com}
+    volumes:
+      - ./data:/data
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    # Réseau Docker sur lequel tourne déjà ton conteneur Caddy
+    external: true
+    name: ${CADDY_NETWORK:-caddy}
